@@ -1,0 +1,15 @@
+Executive Summary
+-----------------
+Target: http://www.itsecgames.com/
+Assessment date: Sept 15, 2025
+
+Scope:
+This assessment performed non-destructive reconnaissance and vulnerability enumeration against the publicly hosted endpoint http://www.itsecgames.com/ using common tools (nmap, nikto, curl, dirb, whatweb, openssl, searchsploit). No active exploitation was performed.
+
+During the assessment, multiple critical issues were discovered:
+- The site serves the bWAPP training application (intentionally vulnerable) and is publicly reachable over HTTP.
+- TLS/HTTPS is misconfigured (certificate name mismatch), leading browsers to block the site.
+- The web server (Apache) appears outdated and is publicly fingerprintable; searchsploit lists relevant Apache-related exploits.
+- Several information-disclosure items (headers, server-status presence, discovered directories) increase attack surface.
+
+Overall risk posture: **HIGH** — the combination of an intentionally vulnerable app exposed to the public and TLS/server misconfigurations makes this environment unsuitable for public exposure. Immediate remediation is recommended (see findings).

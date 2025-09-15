@@ -1,0 +1,60 @@
+Detailed Findings
+-----------------
+
+1. SSL/TLS Misconfiguration [HIGH]
+   Evidence: openssl_dates_issuer_subject.txt, ssl_ciphers_nmap.txt, browser HTTPS warning screenshot
+   Risk: The SSL certificate is invalid and does not match the hostname. Weak/unsupported ciphers are present.
+   Recommendation: Deploy a valid certificate that includes "itsecgames.com" and disable weak ciphers.
+
+2. Exposed bWAPP Application [HIGH]
+   Evidence: whatweb.txt, homepage_source.txt, homepage screenshot
+   Risk: bWAPP is an intentionally vulnerable application that contains dozens of exploitable flaws (SQL Injection, XSS, CSRF, etc.). 
+   Recommendation: Restrict access to bWAPP to internal, isolated environments only. Do not expose publicly.
+
+3. Outdated Apache Web Server [HIGH]
+   Evidence: nmap_http_full.txt, whatweb.txt, searchsploit_apache.txt
+   Risk: Apache version identified is outdated and linked to multiple CVEs.
+   Recommendation: Upgrade Apache to the latest supported version and apply security patches.
+
+4. Information Disclosure via HTTP Headers [MEDIUM]
+   Evidence: headers_http.txt, headers_https.txt, curl_https_headers.txt
+   Risk: Headers reveal server type, PHP version, and other internal details. This aids attackers in fingerprinting.
+   Recommendation: Minimize information disclosure by removing or obfuscating sensitive headers.
+
+5. Accessible Server-Status Page [MEDIUM]
+   Evidence: server_status.txt
+   Risk: Exposes real-time request, IP, and configuration information to anyone.
+   Recommendation: Restrict server-status to localhost or admin users only.
+
+6. Directory and Path Discovery [MEDIUM]
+   Evidence: dirb_dirs.txt
+   Risk: Attackers can discover hidden directories or files that may contain sensitive data.
+   Recommendation: Disable directory listing and review exposed directories.
+
+7. Vulnerable Applications Detected [MEDIUM]
+   Evidence: searchsploit_BWAPP.txt
+   Risk: Exploit references exist for bWAPP vulnerabilities.
+   Recommendation: Remove bWAPP or restrict to isolated lab environments.
+
+8. Missing Robots.txt [LOW]
+   Evidence: robots.txt
+   Risk: No explicit access restrictions for crawlers. While low risk, this increases surface exposure.
+   Recommendation: Configure robots.txt to limit search engine exposure if necessary.
+
+Supporting Evidence:
+- Nikto (nikto_report.txt, nikto_report_ip.txt): Identified SSL misconfiguration, outdated server, and insecure headers.
+- Nmap Scans (nmap_http_basic.txt, nmap_http_nse.txt, nmap_top1000_nse.txt, nmap_top2000.txt): Confirmed service fingerprinting, script vulnerabilities, and open ports.
+
+
+
+Prioritized List of Findings
+----------------------------
+
+1. SSL/TLS misconfiguration → HIGH
+2. Exposed bWAPP application → HIGH
+3. Outdated Apache version (multiple CVEs) → HIGH
+4. Information disclosure via HTTP headers → MEDIUM
+5. Accessible server-status page → MEDIUM
+6. Directory/path discovery (dirb) → MEDIUM
+7. Vulnerable applications detected in Searchsploit → MEDIUM
+8. Missing robots.txt → LOW
